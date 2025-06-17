@@ -10,11 +10,21 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public UserForm $user;
+    public UserForm $userForm;
+    public int $id = -1;
+    public null | User $user =  null;
+
+    public function mount(User $user){
+        $this->userForm->setUser($user);
+    }
 
     public function save(){
-        $this->user->save();
-        $this->user->reset();
+        if(isset($this->user)) {
+            $this->userForm->update($this->user);
+            return;
+        }
+        $this->userForm->store();
+        $this->userForm->reset();
     }
     public function render()
     {
