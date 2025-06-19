@@ -1,5 +1,18 @@
 <div>
-  <form wire:submit="save">
+  <form wire:submit="save" class="p-10">
+    @if (isset($tempImg))
+    <fieldset class="fieldset items-center">
+      <legend class="fieldset-legend">Imagen actual</legend>
+      <img src="{{asset('storage/'.$tempImg)}}" alt="" class=" max-h-[300px] max-w-[300px] rounded-full">
+    </fieldset>
+    @endif
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Imagen de perfil:</legend>
+      <input type="file" name="profile_picture" id="" class="file-input" wire:model="userForm.profile_picture" >
+      @error('userForm.profile_picture')
+        <span class=" text-error">{{ $message }}</span>
+      @enderror
+    </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Nombre</legend>
       <input type="text" class="input" wire:model="userForm.name">

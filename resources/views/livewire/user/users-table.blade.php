@@ -1,5 +1,9 @@
 <div>
-  <table class="table bg-base-200">
+  <fieldset class=" fieldset mb-3">
+    <legend class="fieldset-legend">Buscar</legend>
+    <input type="text" wire:model.live="search" class="input">
+  </fieldset>
+  <table class="table bg-base-200 overflow-x-auto">
     <!-- head -->
     <thead>
       <tr>
@@ -18,7 +22,7 @@
           <th>{{ $loop->index + 1 }}</th>
           <th>
             <div class="mask h-12 w-12">
-              <img src="{{ $user->profile_picture }}" alt="" class="object-cover rounded-full">
+              <img src="{{ asset('storage/'.$user->profile_picture) }}" alt="" class="object-cover rounded-full">
             </div>
           </th>
           <td>{{ $user->name }}</td>

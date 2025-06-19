@@ -5,25 +5,29 @@ namespace App\Livewire\User;
 use App\Http\Requests\StoreUser;
 use App\Livewire\Forms\UserForm;
 use App\Models\User;
+use App\Services\ImageService;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
     public UserForm $userForm;
-    public int $id = -1;
-    public null | User $user =  null;
+    public null | string $tempImg = null;
+    public bool $isEditing = false;
+    public ?User $user = null;
 
-    public function mount(User $user){
-        $this->userForm->setUser($user);
+    public function mount($user = null){
+        if(isset($user) && $user->exists){
+            $this->isEditing = true;
+            $this->userForm->setUser($user, $this->isEditing);
+            $this->tempImg = $user->profile_picture;
+        }
     }
 
     public function save(){
-        if(isset($this->user)) {
-            $this->userForm->update($this->user);
-            return;
-        }
-        $this->userForm->store();
+        $this->userForm->save($this->tempImg, $this->user);
         $this->userForm->reset();
     }
     public function render()

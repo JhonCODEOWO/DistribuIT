@@ -46,7 +46,7 @@
         </a>
       </li>
     </ul>
-    <div class="grow max-h-[calc(100dvh-64px)] overflow-y-auto">
+    <div class="grow max-h-[calc(100dvh-64px)] overflow-y-auto p-3">
       @yield('content')
     </div>
   </section>
