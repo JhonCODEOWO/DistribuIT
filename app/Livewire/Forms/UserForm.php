@@ -56,10 +56,10 @@ class UserForm extends Form
     private function update(string $imgName, User $user){
         $imageService = new ImageService();
         //Validate if filename exists and submit the new file
-        if(!Storage::disk('user_pictures')->exists($this->profile_picture)){
+        if(!Storage::disk('user_pictures')->exists($imgName)){
             Storage::disk('user_pictures')->delete($imgName);
-            $this->profile_picture = $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
         }
+        $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
         $user->update($this->except('password', 'password_confirmation'));
         return redirect()->route('user.index');
     }

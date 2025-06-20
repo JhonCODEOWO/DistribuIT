@@ -1,7 +1,13 @@
 <div>
   <fieldset class=" fieldset mb-3">
     <legend class="fieldset-legend">Buscar</legend>
-    <input type="text" wire:model.live="search" class="input">
+    <div class="flex gap-x-3">
+      <input type="text" wire:model="searchQuery" class="input">
+    <button class="btn btn-success" wire:click="search()">Buscar</button>
+    @if ($searchQuery != '')
+        <button class="btn btn-error" wire:click="resetQuery()">X</button>
+    @endif
+    </div>
   </fieldset>
   <table class="table bg-base-200 overflow-x-auto">
     <!-- head -->
