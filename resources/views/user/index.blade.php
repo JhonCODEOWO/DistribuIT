@@ -1,7 +1,7 @@
 @extends('navigation/templates/template')
 @section('title', 'Usuarios')
 @section('content')
-    <div class="flex justify-between p-4 my-3">
+    <div class="flex justify-between mb-4">
         <livewire:ui.title title="Usuarios">
         <a class="btn btn-success" href="{{route('user.create')}}">Crear nuevo usuario...</a>
     </div>
