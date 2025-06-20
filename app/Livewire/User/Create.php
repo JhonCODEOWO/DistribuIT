@@ -27,7 +27,7 @@ class Create extends Component
     }
 
     public function save(){
-        $this->userForm->save($this->tempImg, $this->user);
+        $this->userForm->save($this->user);
         $this->userForm->reset();
     }
     public function render()

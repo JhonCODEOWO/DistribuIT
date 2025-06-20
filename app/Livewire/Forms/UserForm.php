@@ -36,11 +36,11 @@ class UserForm extends Form
         return $generalRules;
     }
 
-    public function save(?string $imgTemp, ?User $user){
+    public function save(?User $user){
         $this->validate();
 
-        if($this->isEditing && isset($imgTemp)){
-            $this->update($imgTemp, $user);
+        if($this->isEditing){
+            $this->update($user);
             return;
         }
         $this->store();
@@ -53,13 +53,13 @@ class UserForm extends Form
         return redirect()->route('user.index');
     }
 
-    private function update(string $imgName, User $user){
+    private function update(User $user){
         $imageService = new ImageService();
         //Validate if filename exists and submit the new file
-        if(!Storage::disk('user_pictures')->exists($imgName)){
-            Storage::disk('user_pictures')->delete($imgName);
+        if(isset($this->profile_picture)){
+            if(Storage::disk('user_pictures')->exists($user->profile_picture)) Storage::disk('user_pictures')->delete($user->profile_picture);
+            $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
         }
-        $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
         $user->update($this->except('password', 'password_confirmation'));
         return redirect()->route('user.index');
     }
@@ -67,7 +67,6 @@ class UserForm extends Form
     public function setUser(User $user, bool $editing){
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->profile_picture = $user->profile_picture;
         $this->isEditing = $editing;
     }
 }
