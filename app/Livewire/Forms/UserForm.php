@@ -22,7 +22,7 @@ class UserForm extends Form
             'password' => '',
             'password_confirmation' => '',
             'email' => 'required|email',
-            'profile_picture' => ''
+            'profile_picture' => (($this->isEditing)? 'nullable': '').'|mimes:jpg'
         ];
 
         if(!$this->isEditing){
@@ -30,7 +30,7 @@ class UserForm extends Form
             $generalRules['password'] .= 'required|confirmed|min:8';
             $generalRules['password_confirmation'] .= 'required|min:8';
             $generalRules['email'] .= '|required';
-            $generalRules['profile_picture'] .= '|required|mimes:jpg';
+            $generalRules['profile_picture'] .= '|required';
         }
 
         return $generalRules;
@@ -55,10 +55,13 @@ class UserForm extends Form
 
     private function update(User $user){
         $imageService = new ImageService();
+        $lastImage = $user->profile_picture;
         //Validate if filename exists and submit the new file
         if(isset($this->profile_picture)){
             if(Storage::disk('user_pictures')->exists($user->profile_picture)) Storage::disk('user_pictures')->delete($user->profile_picture);
             $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
+        }else{
+            $this->profile_picture = $lastImage;
         }
         $user->update($this->except('password', 'password_confirmation'));
         return redirect()->route('user.index');
