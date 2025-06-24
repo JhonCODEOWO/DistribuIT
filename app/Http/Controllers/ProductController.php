@@ -14,4 +14,8 @@ class ProductController extends Controller
     function edit(Product $product){
         return view('products/edit', compact('product'));
     }
+
+    function create(){
+        return view('products/create');
+    }
 }

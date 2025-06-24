@@ -14,21 +14,30 @@ class ProductForm extends Form
     public float $stock;
     public float $price;
     public $url_image;
+    public $images;
 
     public function rules(){
         $rulesGlobal = [
             "name" => "max:30|string|unique:products,name,".$this->id,
             "description" => "min:10",
             "stock" => "min:0",
-            "price" => "min:0",
+            "price" => "min:0|decimal:2",
             "url_image" => "nullable|mimes:jpg,png",
+            "images" => "required|array",
+            "images.*" => "mimes:jpg",
         ];
 
+        if(!$this->id){
+            $rulesGlobal["stock"] .= '|required';
+            $rulesGlobal["price"] .= '|required';
+            $rulesGlobal["url_image"] .= '|required';
+        }
         return $rulesGlobal;
     }
 
     public function save(){
         $this->validate();
+        return;
         if(isset($this->id)) {
             $this->update($this->id);
             return;
@@ -49,6 +58,8 @@ class ProductForm extends Form
     }
 
     public function create(){
+        $imageService = new ImageService();
+        $this->url_image = $imageService->saveInto($this->url_image, 'product_pictures');
         Product::create($this->all());
     }
 

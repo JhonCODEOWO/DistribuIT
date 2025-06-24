@@ -27,6 +27,7 @@ Route::controller(LoginController::class)->prefix('auth')->group(function() {
 
 Route::middleware('auth')->controller(ProductController::class)->prefix('products')->group(function(){
     Route::get('', 'index')->name('products.index');
+    Route::get('create', 'create')->name('products.create');
     Route::get('edit/{product}', 'edit')->name('products.edit');
 });
 

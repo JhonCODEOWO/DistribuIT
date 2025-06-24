@@ -58,7 +58,7 @@ class UserForm extends Form
         $lastImage = $user->profile_picture;
         //Validate if filename exists and submit the new file
         if(isset($this->profile_picture)){
-            if(Storage::disk('user_pictures')->exists($user->profile_picture)) Storage::disk('user_pictures')->delete($user->profile_picture);
+            $imageService->deleteIfExists('user_pictures', $lastImage);
             $this->profile_picture = $imageService->saveInto($this->profile_picture, 'user_pictures');
         }else{
             $this->profile_picture = $lastImage;

@@ -1,10 +1,17 @@
 <div>
   <form wire:submit="save" class="p-10">
-    @if (isset($tempImg))
+    @if ($tempImg)
     <fieldset class="fieldset items-center">
       <legend class="fieldset-legend">Imagen actual</legend>
-      <img src="{{asset('storage/'.$tempImg)}}" alt="" class=" max-h-[300px] max-w-[300px] rounded-full">
+      <img src="{{asset('storage/user_pictures/'.$tempImg)}}" alt="" class=" max-h-[300px] max-w-[300px] rounded-full">
     </fieldset>
+    @if($userForm->profile_picture)
+    <fieldset class="fieldset items-center">
+      <legend class="fieldset-legend">Imagen seleccionada</legend>
+      <p>*La imagen se recortará a un formato de 500*500px</p>
+      <img src="{{$userForm->profile_picture->temporaryUrl()}}" alt="" class=" max-h-[100px] max-w-[100px] rounded-full">
+    </fieldset>
+    @endif
     @endif
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Imagen de perfil:</legend>
