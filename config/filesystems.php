@@ -40,12 +40,18 @@ return [
 
         'user_pictures' => [
             'driver' => 'local',
-            'root' => storage_path('app/user_pictures'),
+            'root' => storage_path('app/public/user_pictures'),
             'serve' => true,
             'throw' => false,
             'report' => false,
         ],
-
+        'product_pictures' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/product_pictures'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -83,7 +89,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('storage') => storage_path('app/user_pictures'),
+        // public_path('storage') => storage_path('app/user_pictures'),
+        // public_path('storage') => storage_path('app/product_pictures'),
     ],
 
 ];

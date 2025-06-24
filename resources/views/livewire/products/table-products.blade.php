@@ -18,10 +18,18 @@
         @foreach ($products as $product)
           <tr wire:key="{{$product->id}}">
             <th>{{$loop->index + 1}}</th>
-            <td>{{$product->image}}</td>
-            <td>{{$product->name}}</td>
-            <td>{{$product->stock}}</td>
-            <td>${{$product->price}}</td>
+            <td class="flex justify-center">
+              <img src="{{asset('storage/product_pictures/'.$product->url_image)}}" alt="" class=" object-cover rounded h-24">
+            </td>
+            <td class="uppercase font-medium text-lg">
+              {{$product->name}}
+            </td>
+            <td @class([
+              'text-success' => $product->stock > 20,
+              'text-warning' => $product->stock > 10,
+              'text-error' => $product->stock <= 10,
+            ])>{{$product->stock}}</td>
+            <td class="text-success font-bold">${{$product->price}}</td>
             <td>
                 <a href="{{route('products.edit', $product->id)}}" class="btn btn-info">Modificar</a>
                 <button class="btn btn-error" wire:click="delete({{$product->id}})" wire:confirm="Eliminar este producto borrará todo sus registros relacionados ¿Esta seguro?">Eliminar</button>

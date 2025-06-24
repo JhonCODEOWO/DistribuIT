@@ -21,8 +21,8 @@ class ImageService {
     /**
      * Almacena una imagen en el disco del servidor recortándola antes de subirla a un formato 500x500
      * 
-     * @var $upload Archivo cargado desde una petición HTTP que es un File.
-     * @var string $disk Nombre del disco en donde se almacenará el archivo.
+     * @param mixed $upload Archivo cargado desde una petición HTTP que es un File.
+     * @param string $disk Nombre del disco en donde se almacenará el archivo.
      * 
      * @return string Nombre del archivo asignado en el servidor
      */
@@ -30,5 +30,9 @@ class ImageService {
         $image = $this->make500Size($upload);
         Storage::disk($disk)->put($upload->getFileName(), $image->encodeByExtension());
         return $upload->getFileName();
+    }
+
+    public function deleteIfExists(string $disk, string $path){
+        if(Storage::disk($disk)->exists($path)) Storage::disk($disk)->delete($path);
     }
 }

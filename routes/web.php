@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Livewire\User\Create;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::middleware('auth')->get('/', function () {
     return view('welcome');
 })->name('index');
 
@@ -26,4 +28,8 @@ Route::controller(LoginController::class)->prefix('auth')->group(function() {
 Route::middleware('auth')->controller(ProductController::class)->prefix('products')->group(function(){
     Route::get('', 'index')->name('products.index');
     Route::get('edit/{product}', 'edit')->name('products.edit');
+});
+
+Route::middleware('auth')->controller(FilesController::class)->prefix('files')->group(function(){
+    Route::get('', 'index')->name('files.index');
 });
