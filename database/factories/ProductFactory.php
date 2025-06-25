@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             "price" => fake()->randomFloat(2, 10, 500),
             "stock" => fake()->randomDigitNotZero(1,100),
             "description" => fake()->text(100),
-            "url_image" => 'https://loremflickr.com/320/240'
+            "url_image" => 'placeholder.png'
         ];
     }
 }

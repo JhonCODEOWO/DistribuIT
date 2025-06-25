@@ -45,6 +45,13 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'global' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/global'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
         'product_pictures' => [
             'driver' => 'local',
             'root' => storage_path('app/public/product_pictures'),

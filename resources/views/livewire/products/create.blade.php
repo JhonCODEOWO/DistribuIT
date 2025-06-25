@@ -21,21 +21,25 @@
                 @enderror
           </div>
           <div class="flex flex-col items-center justify-center">
-            @if ($productForm->url_image)
+            @isset ($productForm->url_image)
               <h2 class="text-xl text-center">Imagen a utilizar</h2>
               <p class="text-sm">*Reemplazará a la anterior si es actualización.</p>
               <img src="{{ $productForm->url_image->temporaryUrl() }}" alt="" class="h-[10rem]">
-            @endif
+            @endisset
           </div>
         </div>
 
-        <div>
+        @isset ($id)
+          <div>
           <h2 class="text-xl text-center">Imágenes del carrusel</h2>
           {{-- Show images if carrouselImages has values --}}
           @isset($carrouselImages)
-            <div class="flex max-w-full overflow-y-auto">
+            <div class="flex max-w-full overflow-y-auto gap-x-3">
               @foreach ($carrouselImages as $itemImage)
-                <img src="{{ $itemImage }}" alt="{{ $itemImage->url }}">
+                <div wire:key="{{$itemImage->id}}">
+                  <img src="{{ asset('storage/global'.'/'.$itemImage->url) }}" alt="{{ $itemImage->url }}" class="max-h-20">
+                  <button type="button" wire:click="deleteCarouselImage({{$itemImage->id}})" class=" text-error text-center">Quitar imagen</button>
+                </div>
               @endforeach
             </div>
           @endisset
@@ -45,7 +49,7 @@
             <p class="alert alert-error alert-soft my-2">No hay imágenes cargadas previamente.</p>
           @endempty
           <fieldset class="fieldset">
-            <legend class="fieldset-legend">Selecciona imágenes para el carrito</legend>
+            <legend class="fieldset-legend">Selecciona imagen nueva...</legend>
             <input type="file" class="file-input" multiple wire:model="productForm.images">
             @error('productForm.images')
               <p class="text-error">{{ $message }}</p>
@@ -54,7 +58,17 @@
               <p class="text-error">{{ $message }}</p>
             @enderror
           </fieldset>
+
+          <div class="grid grid-cols-3 gap-4">
+            @foreach ($images as $image)
+                <div wire:key="{{$image->id}}">
+                  <img src="{{asset('storage/global/'.$image->url)}}" alt="" class="w-full object-cover">
+                  <button type="button" wire:click="addImageGlobal({{$image->id}})" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"/></svg> Usar imagen</button>
+                </div>
+            @endforeach
+          </div>
         </div>
+        @endisset
         <div>
 
         </div>

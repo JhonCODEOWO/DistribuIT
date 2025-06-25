@@ -6,10 +6,10 @@
         <button class="btn  btn-success">Subir archivos...</button>
     </div>
 
-    <section class="grid grid-cols-4">
+    <section class="grid grid-cols-4 gap-4">
         @foreach ($images as $image)
             <picture>
-                <img src="" alt="{{$image->url}}">
+                <img src="{{asset('storage/global/'.$image->url)}}" alt="{{$image->url}}">
             </picture>
         @endforeach
     </section>

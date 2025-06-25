@@ -4,6 +4,9 @@ namespace App\Livewire\Forms;
 
 use App\Models\Product;
 use App\Services\ImageService;
+use FFI;
+use Illuminate\Foundation\Http\FormRequest;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
 
 class ProductForm extends Form
@@ -14,20 +17,21 @@ class ProductForm extends Form
     public float $stock;
     public float $price;
     public $url_image;
-    public $images;
+    public ?array $images; //Nullable o arreglo de imágenes cargadas
 
-    public function rules(){
+    public function rules()
+    {
         $rulesGlobal = [
-            "name" => "max:30|string|unique:products,name,".$this->id,
+            "name" => "max:30|string|unique:products,name," . $this->id,
             "description" => "min:10",
             "stock" => "min:0",
-            "price" => "min:0|decimal:2",
+            "price" => "min:0",
             "url_image" => "nullable|mimes:jpg,png",
-            "images" => "required|array",
+            "images" => "nullable|array",
             "images.*" => "mimes:jpg",
         ];
 
-        if(!$this->id){
+        if (!$this->id) {
             $rulesGlobal["stock"] .= '|required';
             $rulesGlobal["price"] .= '|required';
             $rulesGlobal["url_image"] .= '|required';
@@ -35,35 +39,52 @@ class ProductForm extends Form
         return $rulesGlobal;
     }
 
-    public function save(){
+    public function save()
+    {
         $this->validate();
-        return;
-        if(isset($this->id)) {
+        if (isset($this->id)) {
             $this->update($this->id);
             return;
         }
         $this->create();
     }
 
-    public function update(int $id){
+    public function update(int $id)
+    {
         $imageService = new ImageService();
         $product = Product::find($id);
-        if(isset($this->url_image)){
+        $data = $this->except('url_image', 'images');
+
+        //Si la imagen de producto no viene...
+        if ($this->url_image instanceof TemporaryUploadedFile) {
+            //Si la imagen de producto viene..
             $imageService->deleteIfExists('product_pictures', $product->url_image);
-            $this->url_image = $imageService->saveInto($this->url_image, 'product_pictures');
-            $product->update($this->all());
+            $data['url_image'] = $imageService->saveInto($this->url_image, 'product_pictures');
         }
 
-        $product->update($this->except('url_image'));
+        //Actualizar producto
+        $product->update($data);
+
+        //Actualizar imágenes de carrito...
+        if(isset($this->images)){
+            $imageService->assignMany($this->images, $product);
+        }
     }
 
-    public function create(){
+    public function create()
+    {
         $imageService = new ImageService();
         $this->url_image = $imageService->saveInto($this->url_image, 'product_pictures');
-        Product::create($this->all());
+        $newProduct = Product::create($this->all()); //Creamos el producto.
+
+        //Añadir imágenes del carro si es que están seleccionadas
+        if (isset($this->images)) {
+            $imageService->assignMany($this->images, $newProduct);
+        }
     }
 
-    public function setData(?Product $product){
+    public function setData(?Product $product)
+    {
         $this->name = $product->name;
         $this->description = $product->description;
         $this->stock = $product->stock;

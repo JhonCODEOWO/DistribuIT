@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Image extends Model
 {
     use HasFactory;
+    protected $fillable = ["url"];
     public function products(): MorphToMany{
         return $this->morphedByMany(Product::class, 'imageable');
     }

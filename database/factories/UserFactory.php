@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'), //Make a password if password doesn't exists
             'remember_token' => Str::random(10),
-            'profile_picture' => 'https://i.pravatar.cc/150'
+            'profile_picture' => 'placeholder.png'
         ];
     }
 
