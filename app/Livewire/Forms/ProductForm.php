@@ -61,7 +61,7 @@ class ProductForm extends Form
             $imageService->deleteIfExists('product_pictures', $product->url_image);
             $data['url_image'] = $imageService->saveInto($this->url_image, 'product_pictures');
         }
-
+        
         //Actualizar producto
         $product->update($data);
 
