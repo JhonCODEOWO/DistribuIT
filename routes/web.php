@@ -3,6 +3,7 @@
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use App\Livewire\User\Create;
 use Illuminate\Routing\Router;
@@ -33,4 +34,9 @@ Route::middleware('auth')->controller(ProductController::class)->prefix('product
 
 Route::middleware('auth')->controller(FilesController::class)->prefix('files')->group(function(){
     Route::get('', 'index')->name('files.index');
+});
+
+Route::middleware('auth')->controller(SaleController::class)->prefix('sales')->group(function(){
+    Route::get('', 'index')->name('sales.index');
+    Route::get('view/{id}', 'show')->name('sales.view');
 });
