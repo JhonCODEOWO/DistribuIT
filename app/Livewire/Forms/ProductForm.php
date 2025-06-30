@@ -18,6 +18,7 @@ class ProductForm extends Form
     public float $price;
     public $url_image;
     public ?array $images; //Nullable o arreglo de imágenes cargadas
+    public $product_status_id;
 
     public function rules()
     {
@@ -29,18 +30,21 @@ class ProductForm extends Form
             "url_image" => "nullable|mimes:jpg,png",
             "images" => "nullable|array",
             "images.*" => "mimes:jpg",
+            "product_status_id" => 'exists:product_statuses,id',
         ];
 
         if (!$this->id) {
             $rulesGlobal["stock"] .= '|required';
             $rulesGlobal["price"] .= '|required';
             $rulesGlobal["url_image"] .= '|required';
+            $rulesGlobal["product_status_id"] .= '|required';
         }
         return $rulesGlobal;
     }
 
     public function save()
     {
+        // dump($this->all());
         $this->validate();
         if (isset($this->id)) {
             $this->update($this->id);
@@ -90,5 +94,6 @@ class ProductForm extends Form
         $this->stock = $product->stock;
         $this->price = $product->price;
         $this->id = $product->id;
+        $this->product_status_id= $product->product_status->id;
     }
 }

@@ -62,5 +62,6 @@
   </section>
   @include('navigation/footer')
   @livewireStyles
+  @vite('resources/js/app.js')
 </body>
 </html>

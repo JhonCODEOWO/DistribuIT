@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'price', 'stock', 'url_image'];
+    protected $fillable = ['name', 'description', 'price', 'stock', 'url_image', 'product_status_id'];
 
     public function user()
     {
@@ -33,5 +33,9 @@ class Product extends Model
             if(Product::where('slug', $slug)->exists()) $slug = $slug . '-' . $count++;
             $product->slug = $slug;
         });
+    }
+
+    public function product_status(){
+        return $this->belongsTo(ProductStatus::class);
     }
 }

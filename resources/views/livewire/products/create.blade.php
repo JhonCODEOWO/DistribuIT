@@ -103,6 +103,18 @@
             <p class="text-sm text-error">{{ $message }}</p>
           @enderror
         </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Status del producto</legend>
+          <select name="" id="" wire:model="productForm.product_status_id" class="select">
+            <option @selected((isset($id)?false : true)) value="0">Selecciona uno</option>
+            @foreach ($statuses as $status)
+                <option value="{{$status->id}}" class="">{{$status->name}}</option>
+            @endforeach
+          </select>
+          @error('productForm.product_status_id')
+            <p class="text-sm text-error">{{ $message }}</p>
+          @enderror
+        </fieldset>
         <button type="submit" class="btn btn-success">Guardar</button>
       </section>
     </div>

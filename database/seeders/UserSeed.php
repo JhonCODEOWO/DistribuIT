@@ -13,6 +13,11 @@ class UserSeed extends Seeder
      */
     public function run(): void
     {
+        if(app()->environment('production')) {
+            User::factory()->create(["name" => 'admin', "email" => 'prueba@prueba.com', "password" => 'admin']);
+            return;
+        }
+        
         User::factory()->count(5)->hasProducts(5)->create();
         User::factory()->count(5)->hasSales(5)->create();
         User::factory()->count(5)->create();

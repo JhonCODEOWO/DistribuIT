@@ -5,6 +5,7 @@ namespace App\Livewire\Products;
 use App\Livewire\Forms\ProductForm;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\ProductStatus;
 use App\Services\ImageService;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
@@ -49,6 +50,7 @@ class Create extends Component
     }
     public function render()
     {
-        return view('livewire.products.create', ["images"=>Image::all()]);
+        $statuses = ProductStatus::all();
+        return view('livewire.products.create', ["images"=>Image::all(), "statuses"=>$statuses]);
     }
 }
