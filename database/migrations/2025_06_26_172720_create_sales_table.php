@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('longitud');
-            $table->string('latitud');
+            $table->string('lng');
+            $table->string('lat');
             $table->string('street');
             $table->string('city');
             $table->string('internal_number')->default('S/N');
-            $table->string('internal_')->default('S/N');
+            $table->string('external_number')->default('S/N');
             $table->text('references');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

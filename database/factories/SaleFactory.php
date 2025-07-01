@@ -17,9 +17,9 @@ class SaleFactory extends Factory
     public function definition(): array
     {
         return [
-            "longitud"=>fake()->longitude(),
+            "lng"=>fake()->longitude(),
             "references" => fake()->text(),
-            "latitud"=>fake()->latitude(),
+            "lat"=>fake()->latitude(),
             "street"=>fake()->streetName(),
             "city"=>fake()->city(),
         ];

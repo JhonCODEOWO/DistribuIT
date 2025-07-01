@@ -2,19 +2,21 @@
 
 namespace App\Livewire\Sales;
 
+use App\Livewire\Forms\SaleForm;
+use App\Models\User;
 use Livewire\Component;
 
 class SaleCreate extends Component
 {
-    public $lng;
-    public $lat;
+    public SaleForm $saleForm;
 
     public function save(){
-        return 'Done';
+        $this->saleForm->save();
+        redirect()->route('sales.index');
     }
 
     public function render()
     {
-        return view('livewire.sales.sale-create');
+        return view('livewire.sales.sale-create', ["users" => User::all()]);
     }
 }

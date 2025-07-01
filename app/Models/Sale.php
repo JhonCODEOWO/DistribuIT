@@ -9,6 +9,7 @@ class Sale extends Model
 {
     /** @use HasFactory<\Database\Factories\SaleFactory> */
     use HasFactory;
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function user(){
         return $this->belongsTo(User::class);
