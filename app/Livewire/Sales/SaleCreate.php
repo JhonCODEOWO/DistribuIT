@@ -10,9 +10,16 @@ class SaleCreate extends Component
 {
     public SaleForm $saleForm;
 
+    public function mount($sale = null){
+        if(isset($sale)){
+            $this->saleForm->setSale($sale);
+            return;
+        }
+    }
+
     public function save(){
-        $this->saleForm->save();
-        redirect()->route('sales.index');
+        $sale = $this->saleForm->save();
+        redirect()->route('sales.view', ["sale" => $sale->id]);
     }
 
     public function render()

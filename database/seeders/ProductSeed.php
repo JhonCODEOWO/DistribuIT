@@ -13,6 +13,7 @@ class ProductSeed extends Seeder
      */
     public function run(): void
     {
-        Product::factory()->count(10)->hasImages(2)->create();
+        //Crear seed de productos, no recomendable ya que se generarían sin usuarios
+        // Product::factory()->count(10)->hasImages(2)->create();
     }
 }

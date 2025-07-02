@@ -35,7 +35,11 @@ class Product extends Model
         });
     }
 
-    public function product_status(){
+    public function productStatus(){
         return $this->belongsTo(ProductStatus::class);
+    }
+
+    public function sales(){
+        return $this->belongsToMany(Sale::class)->withPivot('quantity', 'subtotal');
     }
 }

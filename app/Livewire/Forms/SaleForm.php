@@ -36,18 +36,18 @@ class SaleForm extends Form
         return $globalRules;
     }
 
-    public function save(){
+    public function save(): Sale{
         $this->validate();
         // if(isset($this->id)){
         //     //Hacer update
         //     return;
         // }
         //Crear registro
-        $this->create();
+        return $this->create();
     }
 
     public function create(){
-        Sale::create($this->all());
+        return Sale::create($this->all());
     }
 
     public function update(){

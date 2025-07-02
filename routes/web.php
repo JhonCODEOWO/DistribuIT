@@ -39,5 +39,5 @@ Route::middleware('auth')->controller(FilesController::class)->prefix('files')->
 Route::middleware('auth')->controller(SaleController::class)->prefix('sales')->group(function(){
     Route::get('', 'index')->name('sales.index');
     Route::get('create', 'create')->name('sales.create');
-    Route::get('view/{id}', 'show')->name('sales.view');
+    Route::get('show/{sale}', 'show')->name('sales.view');
 });

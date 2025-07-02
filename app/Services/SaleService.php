@@ -1,5 +1,7 @@
 <?php
 namespace  App\Services;
+
+use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -24,5 +26,31 @@ class SaleService {
     public function update(int $id, array $data){
         $sale = $this->findOne($id);
         $sale->update($data);
+    }
+
+
+    /** @param array<int, float> $items*/
+    public function addProductsToSale(array $items, int $id){
+        $sale = $this->findOne($id);
+        $attachment = array();
+
+        //TODO: Validar cada producto y tipado de elementos en $items
+        foreach ($items as $id => $quantity) {
+            //Obtener producto
+            $product = Product::findOrFail($id);
+            //Verificar si ya existe en la venta actual
+            $existsInSale = $sale->products->contains($product->id);
+
+            (!$existsInSale)? 
+                $attachment[$id] = ["quantity" => $quantity, "subtotal" => $product->price * $quantity]
+                : $sale->products()->updateExistingPivot($product->id, ["quantity" => $quantity, "subtotal" => $product->price * $quantity]);
+        };
+        $sale->products()->attach($attachment);
+
+        return $sale;
+    }
+
+    public function updateProductInSale(Sale $sale, int $idProduct, array $data){
+
     }
 }

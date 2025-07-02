@@ -36,7 +36,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        return view('sales/view');
+        return view('sales/view', compact('sale'));
     }
 
     /**
