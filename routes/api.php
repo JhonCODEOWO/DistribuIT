@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,7 @@ Route::controller(LoginController::class)->prefix('auth')->group(function() {
     Route::delete('/logout', [LoginController::class, 'revokeToken'])->middleware('auth:sanctum');
 });
 
-//Renovar token
-Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
-    return ['token' => $token->plainTextToken];
-})->middleware('auth:sanctum');
+Route::controller(ProductController::class)->prefix('products')->group(function(){
+    Route::get('list', 'find');
+    Route::get('show/{slug}', 'findOne');
+});
