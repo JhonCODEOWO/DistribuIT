@@ -1,14 +1,23 @@
 <div>
-  <section class="grid grid-cols-2 rounded-lg bg-base-200 my-3 p-2">
+  <section class="grid grid-cols-2 rounded-lg bg-base-200 my-3 p-2 gap-x-5">
     <div>
       <h2 class="text-2xl">Domicilio</h2>
       <p>{{ $sale->street }}, {{ $sale->city }}</p>
+      <div class="divider"></div>
+      <h2 class="text-2xl">Referencias</h2>
+      <p class=" text-justify">{{ $sale->references }}</p>
+      <div class="divider"></div>
+      <div>
+        <button class="btn btn-success">Cobrar</button>
+        <button class="btn btn-error">Cancelar pedido</button>
+      </div>
     </div>
     <div>
-
+      <livewire:shared.map-viewer :lng="$sale->lng" :lat="$sale->lat" :zoom="15"/>
     </div>
   </section>
 
+  <h2 class="text-center text-2xl mb-4">Pedido</h2>
   <section class="grid grid-cols-2 gap-x-3">
     <ul class="list rounded-box shadow-md bg-base-200">
 
