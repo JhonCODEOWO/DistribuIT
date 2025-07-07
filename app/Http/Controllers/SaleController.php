@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaleRequest;
 use App\Models\Sale;
+use App\Services\SaleService;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -26,9 +28,13 @@ class SaleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaleRequest $request, SaleService $saleService)
     {
-        //
+        $user = $request->user();
+        $dataSale = $request->safe()->except('products');
+        $dataSale["user_id"] = $user->id;
+
+        return response()->json($saleService->createAndAppendProducts($dataSale, $request->safe()->products));
     }
 
     /**
@@ -50,9 +56,9 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
+    public function update(SaleRequest $request, Sale $sale, SaleService $saleService)
     {
-        //
+        return $saleService->update($sale->id, $request->validated());
     }
 
     /**

@@ -3,7 +3,10 @@ namespace  App\Services;
 
 use App\Models\Product;
 use App\Models\Sale;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SaleService {
     public function create(array $data): Sale{
@@ -26,6 +29,28 @@ class SaleService {
     public function update(int $id, array $data){
         $sale = $this->findOne($id);
         $sale->update($data);
+        return $sale;
+    }
+
+    /**
+     * Create a sale and add to it the items given
+     * @param array $saleData Data about sale to create
+     * @param array items Array of objects with properties product_id & quantity
+     * @example $items [{product_id = 1, quantity = 2}, {product_id = 3, quantity = 1}]
+     * 
+     */
+    public function createAndAppendProducts(array $saleData, array $items){
+        DB::beginTransaction();
+        try {
+            $items = collect($items)->mapWithKeys(fn($item) => [(int) $item['product_id'] => $item['quantity']])->toArray(); //Convertir json a key value
+            $sale = $this->create($saleData);
+            $saleWithProducts = $this->addProductsToSale($items, $sale->id);
+            DB::commit();
+            return $saleWithProducts;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            abort(500, $ex->getMessage());
+        }
     }
 
 
@@ -50,7 +75,7 @@ class SaleService {
         //Añadir los productos a la venta
         $sale->products()->attach($attachment);
 
-        return $sale;
+        return $sale->load('products');
     }
 
     public function updateProductInSale(Sale $sale, int $idProduct, array $data){
