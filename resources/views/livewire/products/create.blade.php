@@ -9,7 +9,7 @@
             <h2 class="text-xl text-center mb-2">Imagen del producto</h2>
             @if($image)
               <picture class="flex justify-center flex-col items-center gap-y-3">
-                <img src="{{ asset('storage/product_pictures/' . $image) }}" alt=""
+                <img src="{{ $image }}" alt=""
                   class="object-cover h-[15rem] w-[15rem] rounded">
               </picture>
             @else
@@ -37,7 +37,7 @@
             <div class="flex max-w-full overflow-y-auto gap-x-3">
               @foreach ($carrouselImages as $itemImage)
                 <div wire:key="{{$itemImage->id}}">
-                  <img src="{{ asset('storage/global'.'/'.$itemImage->url) }}" alt="{{ $itemImage->url }}" class="max-h-20">
+                  <img src="{{ $itemImage->url_resource }}" alt="{{ $itemImage->url }}" class="max-h-20">
                   <button type="button" wire:click="deleteCarouselImage({{$itemImage->id}})" class=" text-error text-center">Quitar imagen</button>
                 </div>
               @endforeach
@@ -62,7 +62,7 @@
           <div class="grid grid-cols-3 gap-4">
             @foreach ($images as $image)
                 <div wire:key="{{$image->id}}">
-                  <img src="{{asset('storage/global/'.$image->url)}}" alt="" class="w-full object-cover">
+                  <img src="{{$image->url_resource}}" alt="" class="w-full object-cover">
                   <button type="button" wire:click="addImageGlobal({{$image->id}})" class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"/></svg> Usar imagen</button>
                 </div>
             @endforeach
@@ -108,7 +108,7 @@
           <select name="" id="" wire:model="productForm.product_status_id" class="select">
             <option @selected((isset($id)?false : true)) value="0">Selecciona uno</option>
             @foreach ($statuses as $status)
-                <option value="{{$status->id}}" class="">{{$status->name}}</option>
+                <option value="{{$status->id}}">{{$status->name}}</option>
             @endforeach
           </select>
           @error('productForm.product_status_id')

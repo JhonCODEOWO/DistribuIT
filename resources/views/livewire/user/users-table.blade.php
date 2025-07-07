@@ -28,7 +28,7 @@
           <th>{{ $loop->index + 1 }}</th>
           <th>
             <div class="mask h-12 w-12">
-              <img src="{{ asset('storage/user_pictures/'.$user->profile_picture) }}" alt="" class="object-cover rounded-full">
+              <img src="{{ $user->profile_picture_url }}" alt="" class="object-cover rounded-full">
             </div>
           </th>
           <td>{{ $user->name }}</td>

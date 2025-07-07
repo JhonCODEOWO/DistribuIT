@@ -24,7 +24,7 @@ class Create extends Component
         if (!isset($product)) return;
         $this->productForm->setData($product);
         $this->id = $product->id;
-        $this->image = $product->url_image;
+        $this->image = $product->url_image_resource;
         if ($product->images->isNotEmpty())
             $this->carrouselImages = $product->images;
     }
@@ -45,8 +45,8 @@ class Create extends Component
 
     public function addImageGlobal(Image $image, ImageService $imageService){
         $product = Product::findOrFail($this->id);
-        $product->images()->syncWithoutDetaching($image);
-        $this->carrouselImages = $product->images()->get();
+        $product->images()->syncWithoutDetaching($image); //Añadir si no existe previamente
+        $this->carrouselImages = $product->images()->get(); //Cargar imágenes actuales
     }
     public function render()
     {

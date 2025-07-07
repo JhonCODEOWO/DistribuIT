@@ -3,7 +3,7 @@
     @if ($tempImg)
     <fieldset class="fieldset items-center">
       <legend class="fieldset-legend">Imagen actual</legend>
-      <img src="{{asset('storage/user_pictures/'.$tempImg)}}" alt="" class=" max-h-[300px] max-w-[300px] rounded-full">
+      <img src="{{$tempImg}}" alt="" class=" max-h-[300px] max-w-[300px] rounded-full">
     </fieldset>
     @if($userForm->profile_picture)
     <fieldset class="fieldset items-center">

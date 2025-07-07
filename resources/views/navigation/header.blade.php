@@ -7,7 +7,7 @@
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
         <div class="w-10 rounded-full">
           <img alt="{{auth()->user()->name}}"
-            src="{{asset('storage/user_pictures/'.auth()->user()->profile_picture)}}" loading="eager"/>
+            src="{{auth()->user()->profile_picture_url}}" loading="eager"/>
         </div>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow">

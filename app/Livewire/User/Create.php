@@ -22,7 +22,7 @@ class Create extends Component
         if(isset($user) && $user->exists){
             $this->isEditing = true;
             $this->userForm->setUser($user, $this->isEditing);
-            $this->tempImg = $user->profile_picture;
+            $this->tempImg = $user->profile_picture_url;
         }
     }
 

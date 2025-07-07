@@ -2,7 +2,7 @@
     @foreach ($files as $file)
         <div>
             <picture wire:key="{{$file->id}}">
-            <img src="{{asset($route.$file->url)}}" alt="" class="object-cover rounded">
+            <img src="{{$file->url_resource}}" alt="" class="object-cover rounded">
             </picture>
             @if ($is_crud)
                 <div class="mt-2">

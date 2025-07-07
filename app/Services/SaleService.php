@@ -29,10 +29,10 @@ class SaleService {
     }
 
 
-    /** @param array<int, float> $items*/
+    /** @param array<int, float> $items donde int es el id y float la cantidad de ese producto*/
     public function addProductsToSale(array $items, int $id){
         $sale = $this->findOne($id);
-        $attachment = array();
+        $attachment = array(); //Arreglo clave valor id => ["subtotal", "quantity"]
 
         //TODO: Validar cada producto y tipado de elementos en $items
         foreach ($items as $id => $quantity) {
@@ -41,10 +41,13 @@ class SaleService {
             //Verificar si ya existe en la venta actual
             $existsInSale = $sale->products->contains($product->id);
 
+            //Si el producto no existe en la venta se prepara para añadir, en caso contrario se coloca la nueva info.
             (!$existsInSale)? 
                 $attachment[$id] = ["quantity" => $quantity, "subtotal" => $product->price * $quantity]
                 : $sale->products()->updateExistingPivot($product->id, ["quantity" => $quantity, "subtotal" => $product->price * $quantity]);
         };
+
+        //Añadir los productos a la venta
         $sale->products()->attach($attachment);
 
         return $sale;

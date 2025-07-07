@@ -11,7 +11,7 @@ use Livewire\Component;
 class ImageList extends Component
 {
     public array | Collection $files;
-    public string $route = 'storage/';
+    public string $route = 'storage/'; //DEPRECATED: Actualmente se debe usar un accesor para devolver la ruta del archivo
     public bool $is_crud = false;
     public ?string $disk = null;
     public ?Model $parent = null;

@@ -19,7 +19,7 @@
           <tr wire:key="{{$product->id}}">
             <th>{{$loop->index + 1}}</th>
             <td class="flex justify-center">
-              <img src="{{asset('storage/product_pictures/'.$product->url_image)}}" alt="" class=" object-cover rounded h-24">
+              <img src="{{$product->url_image_resource}}" alt="" class=" object-cover rounded h-24">
             </td>
             <td class="uppercase font-medium text-lg">
               {{$product->name}}

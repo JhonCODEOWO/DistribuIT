@@ -95,8 +95,12 @@ class ImageService {
         return ModelsImage::create($data);
     }
 
+    /** 
+     * Elimina una imagen de manera permantente en el servidor
+    */
     public function delete(int $id): bool{
         $image = $this->findOne($id);
+        $this->deleteIfExists('global', $image->url);
         $image->delete();
         return true;
     }

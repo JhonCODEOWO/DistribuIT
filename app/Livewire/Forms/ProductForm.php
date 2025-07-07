@@ -94,6 +94,6 @@ class ProductForm extends Form
         $this->stock = $product->stock;
         $this->price = $product->price;
         $this->id = $product->id;
-        $this->product_status_id= $product->product_status->id;
+        $this->product_status_id = $product->productStatus->id;
     }
 }

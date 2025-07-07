@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'description', 'price', 'stock', 'url_image', 'product_status_id'];
+
+    protected $appends = ['url_image_resource'];
 
     public function user()
     {
@@ -41,5 +45,17 @@ class Product extends Model
 
     public function sales(){
         return $this->belongsToMany(Sale::class)->withPivot('quantity', 'subtotal');
+    }
+
+    protected function urlImageResource(): Attribute {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => env('APP_URL').'/storage/product_pictures/'.$attributes['url_image']
+        );
+    }
+
+    protected function name(): Attribute {
+        return Attribute::make(
+            get: fn (string $name) => ucfirst($name)
+        );
     }
 }

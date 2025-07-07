@@ -10,6 +10,7 @@
       <div>
         <button class="btn btn-success">Cobrar</button>
         <button class="btn btn-error">Cancelar pedido</button>
+        <a class="btn btn-info" href="https://www.google.com/maps/place/{{$sale->lat}},{{$sale->lng}}">Visitar con google maps</a>
       </div>
     </div>
     <div>
