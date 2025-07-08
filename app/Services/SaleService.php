@@ -18,7 +18,7 @@ class SaleService {
     }
 
     public function findAll(?string $searchQuery = null){
-        return Sale::paginate(5);
+        return empty($searchQuery)? Sale::paginate(5): Sale::whereDate('created_at', $searchQuery)->paginate(5);
     }
 
     public function delete(int $id): bool{
