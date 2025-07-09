@@ -11,20 +11,92 @@ use App\Models\Sale;
 use App\Services\SaleService;
 use Illuminate\Http\Request;
 
+use OpenApi\Attributes as OAT;
+use OpenApi\Annotations as OA;
+
+
 class SaleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieve a pagination of sales based on the search by date
      */
-    public function index(SaleService $saleService, SaleIndexRequest $request){
+    #[
+        OAT\Get(
+            path: '/api/sales',
+            tags: ['sales'],
+            description: 'Return a pagination of all sales',
+            responses: [new OAT\Response(response: 200, description: 'Sales paginated', content: new OAT\MediaType(mediaType: 'application/json'))],
+            parameters: [
+                new OAT\QueryParameter(
+                    name: 'searchQuery',
+                    description: 'A date valid to filter sales',
+                    required: false,
+                    example: '2025-07-06'
+                )
+            ],
+            security: [
+            [
+                'bearerToken' => [
+                ],
+            ],
+        ]
+        )
+    ]
+    public function index(SaleService $saleService, SaleIndexRequest $request)
+    {
         $searchQuery = $request->query('searchQuery') ?? '';
         return $saleService->findAll($searchQuery);
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Create a new sale with products
      */
-        public function store(SaleRequest $request, SaleService $saleService)
+    #[OAT\Post(
+        path: '/api/sales/store',
+        tags: ['sales'],
+        description: 'Create a new sale with products included',
+        security: [
+            [
+                'bearerToken' => []
+            ]
+        ],
+        responses: [
+            new OAT\Response(response: 200, description: 'Sale created correctly', content: new OAT\MediaType(mediaType: 'application/json')),
+            new OAT\Response(response: 422, description: 'Some data input is not permitted', content: new OAT\MediaType(mediaType: 'application/json')),
+            new OAT\Response(response: 401, description: 'You need a PersonalAccessToken', content: new OAT\MediaType(mediaType: 'application/json'))
+        ],
+        requestBody: new OAT\RequestBody(
+            required: true, 
+            description: 'Data necessary to create the sale', 
+            content: new OAT\JsonContent(
+                type: 'object',
+                required: ['lng', 'lat', 'street', 'city', 'internal_number', 'external_number', 'references', 'products'],
+                properties: [
+                    new OAT\Property(property: 'lng', description: 'The longitude data of location', type: 'number', format: 'float', example:-122.21458918676),
+                    new OAT\Property(property: 'lat', description: 'The latitude data of location', type: 'number', format: 'float', example:57.415704401843),
+                    new OAT\Property(property: 'street', description: 'Street of location', type: 'string', example: 'Hazle Park'),
+                    new OAT\Property(property: 'city', description: 'City of location', type: 'string', example:'New Preston'),
+                    new OAT\Property(property: 'internal_number', description: 'Internal number of the house', type: 'string', example: 'S/N'),
+                    new OAT\Property(property: 'external_number', description: 'External number of the house', type: 'string', example: 'S/N'),
+                    new OAT\Property(property: 'references', description: 'References to arrive in the location correctly', type: 'string', example: 'Crossing the white house'),
+                    new OAT\Property(
+                        property: 'products', 
+                        description: 'Array of objects with product_id and quantity, each product can not be duplicated', 
+                        type: 'array', 
+                        items: new OAT\Items(
+                            type: 'object', 
+                            required: ['product_id', 'quantity'], 
+                            properties: [
+                                new OAT\Property(property: 'product_id', type: 'integer', example: 3, description: 'ID of a product'),
+                                new OAT\Property(property: 'quantity', type: 'integer', example: 5, description: 'Quantity of items to buy')
+                            ]
+                        )
+                    ),
+                ]
+            )
+        )
+    )]
+    public function store(SaleRequest $request, SaleService $saleService)
     {
         $user = $request->user();
         $dataSale = $request->safe()->except('products');

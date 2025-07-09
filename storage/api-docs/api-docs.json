@@ -1,0 +1,176 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MarketAPI",
+        "contact": {
+            "email": "jonathan.juarez.valera@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/sales": {
+            "get": {
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Retrieve a pagination of sales based on the search by date",
+                "description": "Return a pagination of all sales",
+                "operationId": "248121b133c730c6860e94383dfe3e12",
+                "parameters": [
+                    {
+                        "name": "searchQuery",
+                        "in": "query",
+                        "description": "A date valid to filter sales",
+                        "required": false,
+                        "example": "2025-07-06"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sales paginated",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
+        },
+        "/api/sales/store": {
+            "post": {
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Create a new sale with products",
+                "description": "Create a new sale with products included",
+                "operationId": "2c0fcc3b63f21d52227fa84613948709",
+                "requestBody": {
+                    "description": "Data necessary to create the sale",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "lng",
+                                    "lat",
+                                    "street",
+                                    "city",
+                                    "internal_number",
+                                    "external_number",
+                                    "references",
+                                    "products"
+                                ],
+                                "properties": {
+                                    "lng": {
+                                        "description": "The longitude data of location",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -122.21458918676
+                                    },
+                                    "lat": {
+                                        "description": "The latitude data of location",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 57.415704401843
+                                    },
+                                    "street": {
+                                        "description": "Street of location",
+                                        "type": "string",
+                                        "example": "Hazle Park"
+                                    },
+                                    "city": {
+                                        "description": "City of location",
+                                        "type": "string",
+                                        "example": "New Preston"
+                                    },
+                                    "internal_number": {
+                                        "description": "Internal number of the house",
+                                        "type": "string",
+                                        "example": "S/N"
+                                    },
+                                    "external_number": {
+                                        "description": "External number of the house",
+                                        "type": "string",
+                                        "example": "S/N"
+                                    },
+                                    "references": {
+                                        "description": "References to arrive in the location correctly",
+                                        "type": "string",
+                                        "example": "Crossing the white house"
+                                    },
+                                    "products": {
+                                        "description": "Array of objects with product_id and quantity, each product can not be duplicated",
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_id",
+                                                "quantity"
+                                            ],
+                                            "properties": {
+                                                "product_id": {
+                                                    "description": "ID of a product",
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "quantity": {
+                                                    "description": "Quantity of items to buy",
+                                                    "type": "integer",
+                                                    "example": 5
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sale created correctly",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Some data input is not permitted",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "You need a PersonalAccessToken",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerToken": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "sales",
+            "description": "sales"
+        }
+    ]
+}
