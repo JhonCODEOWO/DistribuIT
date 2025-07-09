@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\SaleDeleteRequest;
 use App\Http\Requests\SaleIndexRequest;
 use App\Http\Requests\SaleRequest;
 use App\Http\Requests\SaleShowRequest;
@@ -45,14 +46,17 @@ class SaleController extends Controller
      */
     public function update(SaleRequest $request, Sale $sale, SaleService $saleService)
     {
-        return $saleService->update($sale->id, $request->validated());
+        $saleData = $request->safe()->except('products');
+        $products = $request->safe()->products ?? [];
+        return $saleService->update($sale->id, $saleData, $products);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SaleDeleteRequest $request, SaleService $saleService)
     {
-        //
+        $valid = $request->validated();
+        return response()->json($saleService->delete($valid['sale'], ["soft" => true]));
     }
 }

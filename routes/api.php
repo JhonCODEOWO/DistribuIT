@@ -26,4 +26,5 @@ Route::middleware('auth:sanctum')->controller(SaleController::class)->prefix('sa
     Route::put('update/{sale}', 'update');
     Route::get('', 'index');
     Route::get('show/{sale}', 'show')->whereNumber('sale');
+    Route::delete('delete/{sale}', 'destroy')->whereNumber('sale');
 });

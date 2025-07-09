@@ -32,9 +32,9 @@ class SaleFormRules
                 "external_number" => "nullable",
                 "references" => "nullable",
                 "due_date" => "nullable|date",
-                // "products" => "required|array|min:1",
-                // "products.*.product_id" => "required|exists:products,id|distinct",
-                // "products.*.quantity" => "required|integer|min:1",
+                "products" => "nullable|array|min:1",
+                "products.*.product_id" => "required|exists:products,id|distinct",
+                "products.*.quantity" => "required|integer|min:1",
         ];
     }
 
