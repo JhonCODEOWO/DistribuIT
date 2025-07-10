@@ -162,13 +162,13 @@
                 ]
             }
         },
-        "/api/sale/{sale}": {
+        "/api/sales/show/{sale}": {
             "get": {
                 "tags": [
                     "sales"
                 ],
                 "summary": "Retrieve a sale.",
-                "operationId": "4e71217a2dfd6a8bf165991153554dac",
+                "operationId": "5e7259450c479ddaa559aa25d8b76ad0",
                 "parameters": [
                     {
                         "name": "sale",

@@ -112,7 +112,7 @@ class SaleController extends Controller
      * Retrieve a sale.
      */
     #[OAT\Get(
-        path:'/api/sale/{sale}',
+        path:'/api/sales/show/{sale}',
         tags: ['sales'],
         parameters: [
             new OAT\Parameter(name: 'sale', in:'path', required:true, description: 'Id of the sale to get')
