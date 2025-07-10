@@ -135,7 +135,11 @@
                     "200": {
                         "description": "Sale created correctly",
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/sale_response"
+                                }
+                            }
                         }
                     },
                     "422": {
@@ -157,9 +161,312 @@
                     }
                 ]
             }
+        },
+        "/api/sale/{sale}": {
+            "get": {
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Retrieve a sale.",
+                "operationId": "4e71217a2dfd6a8bf165991153554dac",
+                "parameters": [
+                    {
+                        "name": "sale",
+                        "in": "path",
+                        "description": "Id of the sale to get",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The sale specified in url",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/sale_response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The sale does not exists in database"
+                    },
+                    "422": {
+                        "description": "You send a invalid value in the URL Param"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
+        },
+        "/api/sales/update/{sale}": {
+            "put": {
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Update the specified resource in storage.",
+                "operationId": "8a12b65b3fb26a64b5bee515817e1a5f",
+                "parameters": [
+                    {
+                        "name": "sale",
+                        "in": "path",
+                        "description": "Id of the sale to get",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The sale modified correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/sale_response"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
+        },
+        "/api/sales/delete/{sale}": {
+            "delete": {
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Remove the specified resource from storage.",
+                "operationId": "aa19aec9cf4eea1681445fdbe0200d97",
+                "parameters": [
+                    {
+                        "name": "sale",
+                        "in": "path",
+                        "description": "Id of the sale to get",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The sale has entered to be cancelled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                },
+                                "example": true
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Some of the inputs or input in URL Param are not valid"
+                    },
+                    "401": {
+                        "description": "You need to use your personal access token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
         }
     },
     "components": {
+        "schemas": {
+            "product_response": {
+                "title": "ProductDTO",
+                "description": "Response of a product in each request related to it",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "The ID of the product",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "The name of product",
+                        "type": "string",
+                        "example": "T SHIRT"
+                    },
+                    "slug": {
+                        "title": "slug",
+                        "description": "Slug of product for SEO apps",
+                        "type": "string",
+                        "example": "t_shirt"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "Description of the product",
+                        "type": "string",
+                        "example": "A simple T-Shirt"
+                    },
+                    "price": {
+                        "title": "price",
+                        "description": "Price for unity",
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "stock": {
+                        "title": "stock",
+                        "description": "Stock available of product",
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    },
+                    "image_url": {
+                        "title": "image_url",
+                        "description": "Url of the main image of the product",
+                        "type": "string",
+                        "example": "http://storage/asda.jpg"
+                    },
+                    "created_at": {
+                        "title": "created_at",
+                        "description": "Date of creation",
+                        "type": "string",
+                        "example": "2025-07-02 18:38:46"
+                    },
+                    "quantityInSale": {
+                        "title": "quantityInSale",
+                        "description": "Quantity of this product in a sale",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
+                    },
+                    "subtotal": {
+                        "title": "subtotal",
+                        "description": "Subtotal of this product in a sale",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "sale_response": {
+                "title": "SaleDTO",
+                "description": "Response of a sale in each request related to it",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "ID of the sale",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "lng": {
+                        "title": "lng",
+                        "description": "Longitude of location",
+                        "type": "string",
+                        "example": 75.560052
+                    },
+                    "lat": {
+                        "title": "lat",
+                        "description": "Latitude of location",
+                        "type": "string",
+                        "example": -64.462155
+                    },
+                    "city": {
+                        "title": "city",
+                        "description": "City of sale",
+                        "type": "string",
+                        "example": "New Alfred"
+                    },
+                    "street": {
+                        "title": "street",
+                        "description": "Street of the sale",
+                        "type": "string",
+                        "example": "Werner Port"
+                    },
+                    "internal_number": {
+                        "title": "internal_number",
+                        "description": "Internal number of sale",
+                        "type": "string",
+                        "example": "S/N"
+                    },
+                    "external_number": {
+                        "description": "External number of sale",
+                        "type": "string",
+                        "example": "S/N"
+                    },
+                    "references": {
+                        "title": "references",
+                        "description": "References to deploy the sale",
+                        "type": "string",
+                        "example": "Crossing the main street in the withe house"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/user_response"
+                    },
+                    "products": {
+                        "title": "products",
+                        "description": "Products in the sale",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/product_response"
+                        }
+                    },
+                    "created_at": {
+                        "title": "created_at",
+                        "description": "Date of creation",
+                        "type": "string",
+                        "example": "2025-07-07 20:19:29"
+                    },
+                    "updated_at": {
+                        "title": "update_at",
+                        "description": "Date of last update",
+                        "type": "string",
+                        "example": "2025-07-07 20:19:29"
+                    }
+                },
+                "type": "object"
+            },
+            "user_response": {
+                "title": "UserDTO",
+                "description": "Response of a user in each request related to it",
+                "properties": {
+                    "id": {
+                        "description": "ID of the user",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of user",
+                        "type": "string",
+                        "example": "John Torres"
+                    },
+                    "email": {
+                        "description": "Email of user",
+                        "type": "string",
+                        "example": "correo@correo.com"
+                    },
+                    "profile_picture": {
+                        "description": "URL to profile picture",
+                        "type": "string",
+                        "example": "http://example/example.jpg"
+                    },
+                    "created_at": {
+                        "description": "Date of creation",
+                        "type": "string",
+                        "example": "2025-07-02 18:38:46"
+                    },
+                    "updated_at": {
+                        "description": "Date of the las update",
+                        "type": "string",
+                        "example": "2025-07-02 18:38:46"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerToken": {
                 "type": "http",

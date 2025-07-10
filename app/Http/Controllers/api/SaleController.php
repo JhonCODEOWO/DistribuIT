@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\SaleDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SaleDeleteRequest;
 use App\Http\Requests\SaleIndexRequest;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use OpenApi\Attributes as OAT;
 use OpenApi\Annotations as OA;
 
+use function PHPSTORM_META\type;
 
 class SaleController extends Controller
 {
@@ -61,7 +63,7 @@ class SaleController extends Controller
             ]
         ],
         responses: [
-            new OAT\Response(response: 200, description: 'Sale created correctly', content: new OAT\MediaType(mediaType: 'application/json')),
+            new OAT\Response(response: 200, description: 'Sale created correctly', content: new OAT\JsonContent(ref: '#/components/schemas/sale_response')),
             new OAT\Response(response: 422, description: 'Some data input is not permitted', content: new OAT\MediaType(mediaType: 'application/json')),
             new OAT\Response(response: 401, description: 'You need a PersonalAccessToken', content: new OAT\MediaType(mediaType: 'application/json'))
         ],
@@ -101,21 +103,56 @@ class SaleController extends Controller
         $user = $request->user();
         $dataSale = $request->safe()->except('products');
         $dataSale["user_id"] = $user->id;
+        $dto = new SaleDTO($saleService->createAndAppendProducts($dataSale, $request->safe()->products));
 
-        return response()->json($saleService->createAndAppendProducts($dataSale, $request->safe()->products));
+        return response()->json($dto);
     }
 
     /**
-     * Display the specified resource.
+     * Retrieve a sale.
      */
+    #[OAT\Get(
+        path:'/api/sale/{sale}',
+        tags: ['sales'],
+        parameters: [
+            new OAT\Parameter(name: 'sale', in:'path', required:true, description: 'Id of the sale to get')
+        ],
+        responses: [
+            new OAT\Response(response: '200', description: 'The sale specified in url', content: new OAT\JsonContent(ref: '#/components/schemas/sale_response')),
+            new OAT\Response(response: '404', description: 'The sale does not exists in database'),
+            new OAT\Response(response: '422', description: 'You send a invalid value in the URL Param'),
+        ],
+        security: [
+            [
+                'bearerToken' => []
+            ]
+        ]
+    )]
     public function show(SaleShowRequest $request, SaleService $saleService)
     {
-        return response()->json($saleService->findOne($request->sale));
+        $dto = new SaleDTO($saleService->findOne($request->sale));
+        return response()->json($dto);
     }
 
     /**
      * Update the specified resource in storage.
      */
+    #[OAT\Put(
+        path: '/api/sales/update/{sale}',
+        tags: ['sales'],
+        responses: [
+            new OAT\Response(response: 200, description: 'The sale modified correctly',content: new OAT\JsonContent(ref: '#/components/schemas/sale_response', type: 'object'))
+        ],
+        parameters: [
+            new OAT\Parameter(name: 'sale', in:'path', required:true, description: 'Id of the sale to get', example: 1)
+        ],
+        security: [
+            [
+                'bearerToken' => []
+            ]
+        ]
+    )]
+    //TODO: DTO of the request
     public function update(SaleRequest $request, Sale $sale, SaleService $saleService)
     {
         $saleData = $request->safe()->except('products');
@@ -126,6 +163,23 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    #[OAT\Delete(
+        path: '/api/sales/delete/{sale}',
+        tags: ['sales'],
+        parameters: [
+            new OAT\Parameter(name: 'sale', in:'path', required:true, description: 'Id of the sale to get', example: 1)
+        ],
+        responses: [
+            new OAT\Response(response: 200, description: 'The sale has entered to be cancelled', content: new OAT\JsonContent(type: 'boolean', example: true)),
+            new OAT\Response(response: 422, description: 'Some of the inputs or input in URL Param are not valid'),
+            new OAT\Response(response: 401, description: 'You need to use your personal access token'),
+        ],
+        security: [
+            [
+                'bearerToken' => []
+            ]
+        ],
+    )]
     public function destroy(SaleDeleteRequest $request, SaleService $saleService)
     {
         $valid = $request->validated();
