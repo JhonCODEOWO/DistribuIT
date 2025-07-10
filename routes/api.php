@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use OpenApi\Attributes as OAT;
+
 Route::controller(LoginController::class)->prefix('auth')->group(function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
