@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\SaleCreateDTO;
 use App\DTOs\SaleDTO;
+use App\DTOs\SaleRequestDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SaleDeleteRequest;
 use App\Http\Requests\SaleIndexRequest;
@@ -14,9 +16,6 @@ use Illuminate\Http\Request;
 
 use OpenApi\Attributes as OAT;
 use OpenApi\Annotations as OA;
-
-use function PHPSTORM_META\type;
-
 class SaleController extends Controller
 {
     /**
@@ -71,39 +70,15 @@ class SaleController extends Controller
             required: true, 
             description: 'Data necessary to create the sale', 
             content: new OAT\JsonContent(
-                type: 'object',
-                required: ['lng', 'lat', 'street', 'city', 'internal_number', 'external_number', 'references', 'products'],
-                properties: [
-                    new OAT\Property(property: 'lng', description: 'The longitude data of location', type: 'number', format: 'float', example:-122.21458918676),
-                    new OAT\Property(property: 'lat', description: 'The latitude data of location', type: 'number', format: 'float', example:57.415704401843),
-                    new OAT\Property(property: 'street', description: 'Street of location', type: 'string', example: 'Hazle Park'),
-                    new OAT\Property(property: 'city', description: 'City of location', type: 'string', example:'New Preston'),
-                    new OAT\Property(property: 'internal_number', description: 'Internal number of the house', type: 'string', example: 'S/N'),
-                    new OAT\Property(property: 'external_number', description: 'External number of the house', type: 'string', example: 'S/N'),
-                    new OAT\Property(property: 'references', description: 'References to arrive in the location correctly', type: 'string', example: 'Crossing the white house'),
-                    new OAT\Property(
-                        property: 'products', 
-                        description: 'Array of objects with product_id and quantity, each product can not be duplicated', 
-                        type: 'array', 
-                        items: new OAT\Items(
-                            type: 'object', 
-                            required: ['product_id', 'quantity'], 
-                            properties: [
-                                new OAT\Property(property: 'product_id', type: 'integer', example: 3, description: 'ID of a product'),
-                                new OAT\Property(property: 'quantity', type: 'integer', example: 5, description: 'Quantity of items to buy')
-                            ]
-                        )
-                    ),
-                ]
+                ref: '#/components/schemas/sale_request'
             )
         )
     )]
     public function store(SaleRequest $request, SaleService $saleService)
     {
-        $user = $request->user();
-        $dataSale = $request->safe()->except('products');
-        $dataSale["user_id"] = $user->id;
-        $dto = new SaleDTO($saleService->createAndAppendProducts($dataSale, $request->safe()->products));
+        $createDTO = new SaleRequestDTO($request->validated(), $request->user()->id);
+        
+        $dto = new SaleDTO($saleService->createAndAppendProducts($createDTO->getSaleData(), $createDTO->getProducts()));
 
         return response()->json($dto);
     }
@@ -143,6 +118,13 @@ class SaleController extends Controller
         responses: [
             new OAT\Response(response: 200, description: 'The sale modified correctly',content: new OAT\JsonContent(ref: '#/components/schemas/sale_response', type: 'object'))
         ],
+        requestBody: new OAT\RequestBody(
+            required: true,
+            description: 'The request body may include all or only some of the following fields. All fields are optional unless otherwise specified.',
+            content: new OAT\JsonContent(
+                ref: '#/components/schemas/sale_request'
+            )
+            ),
         parameters: [
             new OAT\Parameter(name: 'sale', in:'path', required:true, description: 'Id of the sale to get', example: 1)
         ],
@@ -155,9 +137,9 @@ class SaleController extends Controller
     //TODO: DTO of the request
     public function update(SaleRequest $request, Sale $sale, SaleService $saleService)
     {
-        $saleData = $request->safe()->except('products');
-        $products = $request->safe()->products ?? [];
-        return $saleService->update($sale->id, $saleData, $products);
+        $dto = new SaleRequestDTO($request->validated());
+        
+        return response()->json(new SaleDTO($saleService->update($sale->id, $dto->getSaleData(), $dto->getProducts())));
     }
 
     /**

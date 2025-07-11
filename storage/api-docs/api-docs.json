@@ -54,79 +54,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "lng",
-                                    "lat",
-                                    "street",
-                                    "city",
-                                    "internal_number",
-                                    "external_number",
-                                    "references",
-                                    "products"
-                                ],
-                                "properties": {
-                                    "lng": {
-                                        "description": "The longitude data of location",
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": -122.21458918676
-                                    },
-                                    "lat": {
-                                        "description": "The latitude data of location",
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 57.415704401843
-                                    },
-                                    "street": {
-                                        "description": "Street of location",
-                                        "type": "string",
-                                        "example": "Hazle Park"
-                                    },
-                                    "city": {
-                                        "description": "City of location",
-                                        "type": "string",
-                                        "example": "New Preston"
-                                    },
-                                    "internal_number": {
-                                        "description": "Internal number of the house",
-                                        "type": "string",
-                                        "example": "S/N"
-                                    },
-                                    "external_number": {
-                                        "description": "External number of the house",
-                                        "type": "string",
-                                        "example": "S/N"
-                                    },
-                                    "references": {
-                                        "description": "References to arrive in the location correctly",
-                                        "type": "string",
-                                        "example": "Crossing the white house"
-                                    },
-                                    "products": {
-                                        "description": "Array of objects with product_id and quantity, each product can not be duplicated",
-                                        "type": "array",
-                                        "items": {
-                                            "required": [
-                                                "product_id",
-                                                "quantity"
-                                            ],
-                                            "properties": {
-                                                "product_id": {
-                                                    "description": "ID of a product",
-                                                    "type": "integer",
-                                                    "example": 3
-                                                },
-                                                "quantity": {
-                                                    "description": "Quantity of items to buy",
-                                                    "type": "integer",
-                                                    "example": 5
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/sale_request"
                             }
                         }
                     }
@@ -218,6 +146,17 @@
                         "example": 1
                     }
                 ],
+                "requestBody": {
+                    "description": "The request body may include all or only some of the following fields. All fields are optional unless otherwise specified.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/sale_request"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "The sale modified correctly",
@@ -425,6 +364,85 @@
                         "description": "Date of last update",
                         "type": "string",
                         "example": "2025-07-07 20:19:29"
+                    }
+                },
+                "type": "object"
+            },
+            "sale_request": {
+                "title": "SaleRequestDTO",
+                "description": "DTO used to make requests related with a sale, use it in create and update request",
+                "properties": {
+                    "lng": {
+                        "description": "Longitude for the sale",
+                        "type": "string",
+                        "example": 19.041951517694,
+                        "nullable": true
+                    },
+                    "lat": {
+                        "description": "Latitude for the sale",
+                        "type": "string",
+                        "example": -98.199081402743,
+                        "nullable": true
+                    },
+                    "street": {
+                        "description": "Street to deploy the sale",
+                        "type": "string",
+                        "example": "Zaragosa",
+                        "nullable": true
+                    },
+                    "city": {
+                        "description": "City to deploy the sale",
+                        "type": "string",
+                        "example": "Puebla",
+                        "nullable": true
+                    },
+                    "internal_number": {
+                        "description": "Internal number of the house",
+                        "type": "string",
+                        "example": "S/N",
+                        "nullable": true
+                    },
+                    "external_number": {
+                        "description": "Street to deploy the sale",
+                        "type": "string",
+                        "example": "S/N",
+                        "nullable": true
+                    },
+                    "references": {
+                        "description": "Specific details to locate the place of deploy",
+                        "type": "string",
+                        "example": "Besides the blue house",
+                        "nullable": true
+                    },
+                    "due_date": {
+                        "description": "Due date to end the sale in format YYYY-MM-DDTHH:MM",
+                        "type": "string",
+                        "example": "2025-08-25T14:00",
+                        "nullable": true
+                    },
+                    "products": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "product_id",
+                                "quantity"
+                            ],
+                            "properties": {
+                                "product_id": {
+                                    "description": "ID of a product",
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "quantity": {
+                                    "description": "Quantity of items to buy",
+                                    "type": "integer",
+                                    "example": 5
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
                     }
                 },
                 "type": "object"
