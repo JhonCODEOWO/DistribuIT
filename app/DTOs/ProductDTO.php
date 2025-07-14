@@ -33,6 +33,7 @@ class ProductDTO
     public float | null $quantityInSale;
     #[OAT\Property(title: 'subtotal', description: 'Subtotal of this product in a sale', nullable: true)]
     public float | null $subtotal;
+    public array $images = [];
     /**
      * Create a new class instance.
      */
@@ -48,5 +49,6 @@ class ProductDTO
         $this->created_at = $product->created_at;
         $this->quantityInSale = $product->pivot->quantity ?? null;
         $this->subtotal = $product->pivot->subtotal ?? null;
+        $this->images = array_map(fn($image) => $image->url_resource,$product->images->all());
     }
 }

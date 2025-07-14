@@ -8,6 +8,81 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Make a user login retrieving the PersonalAccessToken",
+                "description": "Endpoint to get a PersonalAccessToken with credentials.",
+                "operationId": "581d46be1a674a79ed9c0c1efe9e126d",
+                "requestBody": {
+                    "description": "Email and password to make the login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Email of the user",
+                                        "type": "string",
+                                        "example": "correo@correo.com"
+                                    },
+                                    "password": {
+                                        "description": "The password of the user",
+                                        "type": "string",
+                                        "example": "abc123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Credentials are correctly and token is retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "description": "Personal access token",
+                                            "example": "1|bZmu4nZqCViOqg7i9JL5LwYlRvl24HkP9uDdeLfO"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "delete": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Revoke a PersonalAccessToken",
+                "description": "Revoke the token from the server of the user that makes the request",
+                "operationId": "27dea412e035b8018669583a02057c28",
+                "responses": {
+                    "200": {
+                        "description": "The token has been revoked correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/sales": {
             "get": {
                 "tags": [
@@ -493,6 +568,10 @@
         }
     },
     "tags": [
+        {
+            "name": "auth",
+            "description": "auth"
+        },
         {
             "name": "sales",
             "description": "sales"
