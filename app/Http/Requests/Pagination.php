@@ -23,7 +23,8 @@ class Pagination extends FormRequest
     {
         return [
             "paginated" => 'nullable|boolean',
-            "page" => 'nullable|integer'
+            "page" => 'nullable|integer',
+            "query" => 'nullable|string',
         ];
     }
 }

@@ -83,6 +83,40 @@
                 }
             }
         },
+        "/api/products/list": {
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "description": "Get products paginated or not",
+                "operationId": "82479a1e217aa93020678e537431d628",
+                "parameters": [
+                    {
+                        "name": "paginated",
+                        "in": "query",
+                        "description": "A flag to retrieve all products in one response or a paginated response",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page of the elements to retrieve from the paginator",
+                        "required": false
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Keyword to search products",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated instance or array with all items"
+                    }
+                }
+            }
+        },
         "/api/sales": {
             "get": {
                 "tags": [
@@ -571,6 +605,10 @@
         {
             "name": "auth",
             "description": "auth"
+        },
+        {
+            "name": "products",
+            "description": "products"
         },
         {
             "name": "sales",
