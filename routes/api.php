@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\SaleController;
+use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,10 @@ Route::controller(LoginController::class)->prefix('auth')->group(function() {
     Route::post('/login', [LoginController::class, 'apiLogin']);
 
     Route::delete('/logout', [LoginController::class, 'revokeToken'])->middleware('auth:sanctum');
+});
+
+Route::controller(UserController::class)->prefix('users')->group(function(){
+    Route::middleware('auth:sanctum')->patch('update', 'update')->whereNumber('user');
 });
 
 Route::controller(ProductController::class)->prefix('products')->group(function(){

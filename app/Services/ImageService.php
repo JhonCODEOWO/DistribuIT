@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Image as ModelsImage;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +38,7 @@ class ImageService {
         $extension = $upload->getClientOriginalExtension();
         $image = $this->make500Size($upload);
         $fileName = UuidV4::uuid4()->toString().'.'.$extension;
-        Storage::disk($disk)->put($fileName, $image->encodeByExtension());
+        Storage::disk($disk)->put($fileName, $image->encodeByExtension($extension));
         return $fileName;
     }
 
@@ -68,7 +69,7 @@ class ImageService {
 
 
     /**
-     * Almacena imágenes en el disco del servidor recortando cada una a un formato 500x500
+     * Almacena imágenes en el disco del servidor recortando cada una a un formato 500x500 y las relaciona hacia el modelo especificado
      * 
      * @param array $fileNames Arreglo de strings con nombres de archivos a asignar a la relación
      * @param mixed $parent Modelo padre al que se relacionaran las imágenes
@@ -79,10 +80,13 @@ class ImageService {
     public function assignMany(array $uploadedFiles, $parent, ?string $disk = null){
         $disk = $disk ?? $this->disk;
         $fileNames = $this->saveMassInto($uploadedFiles, $disk); //Guardar archivos en el disco y obtener nombres
+        
+        //Generar registros en BD sobre los archivos subidos
         $images = array();
         foreach ($fileNames as $file) {
             array_push($images, $this->create(["url" => $file])); //Almacenar cada registro en un arreglo
         }
+
         $parent->images()->syncWithoutDetaching($images); //Relacionar todos los registros del arreglo.
     }
 

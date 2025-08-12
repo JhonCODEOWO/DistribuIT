@@ -326,6 +326,43 @@
                     }
                 ]
             }
+        },
+        "api/users/update": {
+            "patch": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update a user and remove the current token",
+                "description": "Make an user update and remove the token of the user",
+                "operationId": "16924a92e5a0548161526e7651f1e0e6",
+                "requestBody": {
+                    "description": "Data to update in the user",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user_request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User update success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                },
+                                "example": 1
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The user must be authenticated"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -592,6 +629,36 @@
                     }
                 },
                 "type": "object"
+            },
+            "user_request": {
+                "title": "UserRequestDTO",
+                "description": "DTO to make request related with users",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 6,
+                        "example": "John Gonzales Luna",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 5,
+                        "example": "correo@correo.com",
+                        "nullable": true
+                    },
+                    "email_verified_at": {
+                        "type": "string",
+                        "example": "",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "example": "root12345",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -613,6 +680,10 @@
         {
             "name": "sales",
             "description": "sales"
+        },
+        {
+            "name": "users",
+            "description": "users"
         }
     ]
 }
