@@ -13,10 +13,14 @@ class UserRequestDTO {
     private ?string $name;
     #[OAT\Property(nullable: true, example: 'correo@correo.com', minLength: 5)]
     private ?string $email;
-    #[OAT\Property(nullable: true, example: '')]
+    #[OAT\Property(nullable: true, example: 'root12345')]
+    private $password_confirmation;
+    // #[OAT\Property(nullable: true, example: '')]
     private ?string $email_verified_at;
     #[OAT\Property(nullable: true, minLength: 8, example: 'root12345')]
     private ?string $password;
+
+    //url string of the profile picture
     private ?string $profile_picture;
     
     function __construct(array $reqData, ?string $profile_picture = null){

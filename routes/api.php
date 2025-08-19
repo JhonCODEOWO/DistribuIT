@@ -20,6 +20,8 @@ Route::controller(LoginController::class)->prefix('auth')->group(function() {
 });
 
 Route::controller(UserController::class)->prefix('users')->group(function(){
+    Route::post('store', 'store');
+    Route::get('verifyEmail/{email}', 'checkEmailTaken');
     Route::middleware('auth:sanctum')->patch('update', 'update')->whereNumber('user');
 });
 

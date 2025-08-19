@@ -327,14 +327,50 @@
                 ]
             }
         },
-        "api/users/update": {
+        "/api/users/store": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user",
+                "description": "Create a new user in the database",
+                "operationId": "c28b0193df0c53eb5ed5ace1f349a0c3",
+                "requestBody": {
+                    "description": "Data to create a user",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user_request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user_response"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error, notify to the developer"
+                    }
+                }
+            }
+        },
+        "/api/users/update": {
             "patch": {
                 "tags": [
                     "users"
                 ],
                 "summary": "Update a user and remove the current token",
                 "description": "Make an user update and remove the token of the user",
-                "operationId": "16924a92e5a0548161526e7651f1e0e6",
+                "operationId": "0907da039d279521e4dfcfa920ca7ce3",
                 "requestBody": {
                     "description": "Data to update in the user",
                     "required": true,
@@ -360,6 +396,37 @@
                     },
                     "401": {
                         "description": "The user must be authenticated"
+                    }
+                }
+            }
+        },
+        "/api/users/verifyEmail/{email}": {
+            "get": {
+                "tags": [
+                    "validators"
+                ],
+                "description": "Check if the user given exists already in users.",
+                "operationId": "87da057d98b1f6698ab78427fc18b032",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "example": "prueba@prueba.com"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Result of evaluation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error, notify to the developer"
                     }
                 }
             }
@@ -646,9 +713,8 @@
                         "example": "correo@correo.com",
                         "nullable": true
                     },
-                    "email_verified_at": {
-                        "type": "string",
-                        "example": "",
+                    "password_confirmation": {
+                        "example": "root12345",
                         "nullable": true
                     },
                     "password": {
@@ -684,6 +750,10 @@
         {
             "name": "users",
             "description": "users"
+        },
+        {
+            "name": "validators",
+            "description": "validators"
         }
     ]
 }
