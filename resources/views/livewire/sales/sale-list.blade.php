@@ -1,5 +1,5 @@
 <div>
-
+  <livewire:ui.search/>
   <div class="overflow-x-auto">
     <table class="table">
       <!-- head -->
@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <!-- row 1 -->
-        @foreach ($sales as $sale)
+        @forelse ($sales as $sale)
           <tr>
             <th>
               <label>
@@ -50,7 +50,11 @@
               <button class="btn btn-ghost btn-xs">details</button>
             </th>
           </tr>
-        @endforeach
+        @empty 
+          <tr class="h-[20rem]">
+            <td colspan="5" class="text-center text-warning text-xl">No se han encontrado datos</td>
+          </tr>
+        @endforelse
       </tbody>
       <!-- foot -->
       <tfoot>

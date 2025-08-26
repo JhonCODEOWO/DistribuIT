@@ -46,7 +46,8 @@ class SaleController extends Controller
     public function index(SaleService $saleService, SaleIndexRequest $request)
     {
         $searchQuery = $request->query('searchQuery') ?? '';
-        return $saleService->findAll($searchQuery);
+        $clientName = $request->query('clientName') ?? '';
+        return $saleService->findAll($searchQuery, $clientName);
     }
 
     /**

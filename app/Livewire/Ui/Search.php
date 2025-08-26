@@ -11,6 +11,7 @@ class Search extends Component
         $this->dispatch('search-product', $this->searchQuery);
         $this->dispatch('reset-page');
     }
+
     public function render()
     {
         return view('livewire.ui.search');
