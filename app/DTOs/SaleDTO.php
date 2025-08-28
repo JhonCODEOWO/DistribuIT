@@ -37,6 +37,8 @@ class SaleDTO
     public string $created_at;
     #[OAT\Property(title: 'update_at', description: 'Date of last update', example: '2025-07-07 20:19:29')]
     public string $updated_at;
+    #[OAT\Property(description: 'Preview about how much pay if the sale was success')]
+    public ?float $total_preview;
 
     /**
      * Asignar todos los datos a exponer en el DTO.
@@ -53,5 +55,6 @@ class SaleDTO
         $this->references = $sale->references;
         $this->user = new UserDTO($sale->user);
         $this->products = array_map(fn($product) => new ProductDTO($product), $sale->products->all());
+        if(isset($sale->products)) $this->total_preview = array_sum(array_map(fn($sale)=>$sale->pivot->subtotal, $sale->products->all()));
     }
 }

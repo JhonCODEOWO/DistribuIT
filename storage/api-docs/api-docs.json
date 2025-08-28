@@ -123,7 +123,7 @@
                     "sales"
                 ],
                 "summary": "Retrieve a pagination of sales based on the search by date",
-                "description": "Return a pagination of all sales",
+                "description": "Return a pagination of all sales from the current user",
                 "operationId": "248121b133c730c6860e94383dfe3e12",
                 "parameters": [
                     {
@@ -138,7 +138,11 @@
                     "200": {
                         "description": "Sales paginated",
                         "content": {
-                            "application/json": {}
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/sale_response"
+                                }
+                            }
                         }
                     }
                 },

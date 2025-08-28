@@ -25,4 +25,8 @@ class SaleIndexRequest extends FormRequest
             "searchQuery" => 'nullable|date'
         ];
     }
+
+    public function prepareForValidation(){
+        $this->merge(['searchQuery' => $this->searchQuery]);
+    }
 }

@@ -25,8 +25,8 @@ class SaleController extends Controller
         OAT\Get(
             path: '/api/sales',
             tags: ['sales'],
-            description: 'Return a pagination of all sales',
-            responses: [new OAT\Response(response: 200, description: 'Sales paginated', content: new OAT\MediaType(mediaType: 'application/json'))],
+            description: 'Return a pagination of all sales from the current user',
+            responses: [new OAT\Response(response: 200, description: 'Sales paginated', content: new OAT\JsonContent(ref: '#/components/schemas/sale_response'))],
             parameters: [
                 new OAT\QueryParameter(
                     name: 'searchQuery',
@@ -46,8 +46,10 @@ class SaleController extends Controller
     public function index(SaleService $saleService, SaleIndexRequest $request)
     {
         $searchQuery = $request->query('searchQuery') ?? '';
-        $clientName = $request->query('clientName') ?? '';
-        return $saleService->findAll($searchQuery, $clientName);
+        $clientName = $request->user()->name;
+        $paginated = $saleService->findAll($searchQuery, $clientName);
+        $paginated->setCollection($paginated->getCollection()->map(fn($sale) => new SaleDTO($sale)));
+        return $paginated;
     }
 
     /**
