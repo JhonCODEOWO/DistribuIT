@@ -1,6 +1,6 @@
 <div class="navbar bg-base-300 shadow-sm">
   <div class="flex-1">
-    <a class="text-xl font-black ml-4">CakeShop</a>
+    <a class="text-xl font-black ml-4">{{$settings_data["APP_NAME"]}}</a>
   </div>
   <div class="flex gap-2 items-center pr-5">
     <div class="dropdown dropdown-end">

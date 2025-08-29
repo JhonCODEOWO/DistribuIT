@@ -38,6 +38,14 @@ return [
             'report' => false,
         ],
 
+        'app_resources' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/app_resources'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
+
         'user_pictures' => [
             'driver' => 'local',
             'root' => storage_path('app/public/user_pictures'),

@@ -31,6 +31,28 @@ class ImageService
     }
 
     /**
+     * Almacena una imagen en el disco del servidor
+     * 
+     * @param mixed $upload Archivo cargado desde una petición HTTP que es un File.
+     * @param string $disk Nombre del disco en donde se almacenará el archivo.
+     * 
+     * @return string Nombre del archivo asignado en el servidor
+     */
+    public function saveOriginalInto($upload, ?string $disk = null): string{
+        try {
+            $disk = $disk ?? $this->disk;
+            $extension = $upload->getClientOriginalExtension();
+            $fileName = UuidV4::uuid4()->toString() . '.' . $extension;
+            Storage::disk($disk)->putFileAs('', $upload, $fileName);
+            return $fileName;
+        } catch (Exception $ex) {
+            Log::error('Ha ocurrido un error en saveOriginalInto '.$ex->getMessage());
+            return '';
+        }
+
+    }
+
+    /**
      * Almacena una imagen en el disco del servidor recortándola antes de subirla a un formato 500x500
      * 
      * @param mixed $upload Archivo cargado desde una petición HTTP que es un File.
