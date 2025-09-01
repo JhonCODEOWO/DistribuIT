@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-# 🛒 DistrIT - Ecommerce con API Pública y Administración Interna
+# 🛒 DistrbuIT - Ecommerce con API Pública y Administración Interna
 ECommerce para venta de productos y entrega de pedidos.
 
 Esta documentación muestra como implementar e instalar el proyecto para uso personal o bien para utilizarlo como desarrollador para fines propios.
