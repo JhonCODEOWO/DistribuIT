@@ -1,8 +1,11 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "MarketAPI",
+        "title": "DistribuIT API",
+        "description": "Documentation about endpoints to clients outside Laravel, use it if you want    make a app using javascript frameworks or some derived applications outside the main app",
         "contact": {
+            "name": "Jonathan Juárez Valera",
+            "url": "https://imjhondev.netlify.app/",
             "email": "jonathan.juarez.valera@gmail.com"
         },
         "version": "1.0.0"
@@ -331,6 +334,40 @@
                 ]
             }
         },
+        "/api/settings": {
+            "get": {
+                "tags": [
+                    "settings"
+                ],
+                "summary": "Retrieve all recent settings in application",
+                "description": "Retrieves a key value array with settings of backend application",
+                "operationId": "9894fdf4e39ffc3662b8c9f44d3122c3",
+                "responses": {
+                    "200": {
+                        "description": "Settings obtained correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "APP_NAME": {
+                                            "description": "The name of application",
+                                            "type": "string",
+                                            "example": "Default"
+                                        },
+                                        "APP_ICON": {
+                                            "description": "The url to access to the icon",
+                                            "type": "string",
+                                            "example": "http://tudominio.com/storage/app_resources/archivo.extension"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/store": {
             "post": {
                 "tags": [
@@ -581,6 +618,12 @@
                         "description": "Date of last update",
                         "type": "string",
                         "example": "2025-07-07 20:19:29"
+                    },
+                    "total_preview": {
+                        "description": "Preview about how much pay if the sale was success",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -750,6 +793,10 @@
         {
             "name": "sales",
             "description": "sales"
+        },
+        {
+            "name": "settings",
+            "description": "settings"
         },
         {
             "name": "users",

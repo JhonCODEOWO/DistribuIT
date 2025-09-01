@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\SaleController;
+use App\Http\Controllers\api\SettingsController;
 use App\Http\Controllers\api\UserController;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -37,4 +38,8 @@ Route::middleware('auth:sanctum')->controller(SaleController::class)->prefix('sa
     Route::get('', 'index');
     Route::get('show/{sale}', 'show')->whereNumber('sale');
     Route::delete('delete/{sale}', 'destroy')->whereNumber('sale');
+});
+
+Route::controller(SettingsController::class)->prefix('settings')->group(function () {
+    Route::get('', 'index');
 });
